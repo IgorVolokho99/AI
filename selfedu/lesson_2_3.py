@@ -1,26 +1,29 @@
 import numpy as np
 
 
-def act(x: float) -> int:
-    return 1 if x <= 0 else 0
+def oct(x):
+    return 0 if x < 0 else 1
 
 
-def check_xor(x: float, y: float) -> int:
-    x_input = np.array([x, y, 1])
-    w_1 = [1, 1, -1.5]
-    w_2 = [1, 1, -0.5]
-    w_hidden = np.array([w_1, w_2])
-    w_out = np.array([-1, 1, 0.5])
+def go(C):
+    x_1 = np.array([C[0], C[1], 1])
+    w_1 = np.array([[1, 1, -1.5], [1, 1, -0.5]])
+    sum_1 = np.dot(w_1, x_1)
+    y_1 = np.array([oct(x) for x in sum_1] + [1])
 
-    x_sum_1 = np.dot(w_hidden, x_input)
-    x_out_1 = [act(x) for x in x_sum_1]
-    x_out_1.append(1)
-    x_out_1 = np.array(x_out_1)
-
-    x_sum_2 = np.dot(w_out, x_out_1)
-    res = act(x_sum_2)
-
-    return res
+    x_2 = y_1
+    w_2 = np.array([-1, 1, -0.5])
+    sum_2 = np.dot(w_2, x_2)
+    y = oct(sum_2)
+    return y
 
 
-print(check_xor(1, 0))
+tests = ((0, 1, 1), (0, 1, 1), (1, 1, 0), (0, 0, 0))
+
+for test in tests:
+    res = go(test[:2])
+    if res == test[-1]:
+        print(f"Угадал, это был класс: {test[-1]}")
+    else:
+        print(f"Не угадал, это был класс: {test[-1]}")
+
