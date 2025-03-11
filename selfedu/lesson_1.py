@@ -6,23 +6,16 @@ def oct(x):
 
 
 def go(house, rock, attr):
-    x_input = np.array([house, rock, attr])
-    w11 = [0.3, 0.3, 0]
-    w12 = [0.4, -0.5, 1]
-    weight1 = np.array([w11, w12])
-    weight2 = np.array([-1, 1])
+    x_input_1 = np.array([house, rock, attr])
+    w1 = np.array([[0.3, 0.4, 0], [0.4, -0.5, 1]])
+    w2 = np.array([-1, 1])
+    x_input_2 = np.dot(w1, x_input_1)
+    y_output_2 = np.array([oct(x) for x in x_input_2])
+    x_input_3 = np.dot(y_output_2, w2)
 
-    sum_hidden = np.dot(weight1, x_input)
-    print("Сумма нейронов скрытого слов:", sum_hidden)
+    out = oct(x_input_3)
 
-    hidden_output = [oct(x) for x in sum_hidden]
-    print("Значение активаций нейронов скрытого слов:", hidden_output)
-
-    last_output = np.dot(weight2, hidden_output)
-    y = oct(last_output)
-    print("Значение выходного словя:", y)
-
-    return y
+    return out
 
 
-go(0, 1, 1)
+print(go(1, 0, 0))
